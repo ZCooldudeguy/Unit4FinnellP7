@@ -6,15 +6,15 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] enemyPrefabs;
     private float spawnRange = 9.0f;
     public int enemyCount;
-    public GameObject powerupPrefab;
+    public GameObject[] powerupPrefabs;
     public int waveNumber = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SpawnEnemyWave(waveNumber);
-        Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
-
+        int randomPowerup = Random.Range(0, powerupPrefabs.Length);
+        Instantiate(powerupPrefabs[randomPowerup], GenerateSpawnPosition(), powerupPrefabs[randomPowerup].transform.rotation);
+       
     }
 
     // Update is called once per frame
@@ -22,24 +22,25 @@ public class SpawnManager : MonoBehaviour
     {
         enemyCount = FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length;
 
-        if(enemyCount == 0)
+        if (enemyCount == 0)
         {
             waveNumber++;
             SpawnEnemyWave(waveNumber);
-            Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
+            int randomPowerup = Random.Range(0, powerupPrefabs.Length);
+            Instantiate(powerupPrefabs[randomPowerup], GenerateSpawnPosition(), powerupPrefabs[randomPowerup].transform.rotation);
         }
     }
-
-    void SpawnEnemyWave(int enemiesToSpawn)
-    {
-        for (int i = 0; i < enemiesToSpawn; i++)
+        void SpawnEnemyWave(int enemiesToSpawn)
         {
+            for (int i = 0; i < enemiesToSpawn; i++)
+            {
 
-           int randomEnemy = Random.Range(0, enemyPrefabs.Length);
+                int randomEnemy = Random.Range(0, enemyPrefabs.Length);
 
-            Instantiate(enemyPrefabs[randomEnemy], GenerateSpawnPosition(), enemyPrefabs[randomEnemy].transform.rotation);
+                Instantiate(enemyPrefabs[randomEnemy], GenerateSpawnPosition(), enemyPrefabs[randomEnemy].transform.rotation);
+            }
         }
-    }
+    
     private Vector3 GenerateSpawnPosition()
     {
         float spawnPosX = Random.Range(-spawnRange, spawnRange);
